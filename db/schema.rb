@@ -11,10 +11,77 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151209004125) do
+ActiveRecord::Schema.define(version: 20151210033557) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "competitions", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "sport_id"
+    t.integer  "competition_format_id"
+    t.string   "competition_format_type"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.boolean  "is_individual"
+  end
+
+  create_table "cups", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "fixtures", force: :cascade do |t|
+    t.string   "competition_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  create_table "friendships", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "friend_id"
+    t.boolean  "approved"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "leagues", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "organisations", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "email_extension"
+  end
+
+  create_table "scores", force: :cascade do |t|
+    t.string   "team_id"
+    t.string   "fixture_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "sports", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "sport_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.boolean  "is_individual"
+  end
+
+  create_table "teams_competitions", id: false, force: :cascade do |t|
+    t.integer "team_id"
+    t.integer "competition_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -43,6 +110,7 @@ ActiveRecord::Schema.define(version: 20151209004125) do
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
     t.integer  "invitations_count",      default: 0
+    t.integer  "organisation_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -50,5 +118,13 @@ ActiveRecord::Schema.define(version: 20151209004125) do
   add_index "users", ["invitations_count"], name: "index_users_on_invitations_count", using: :btree
   add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "users_teams", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "team_id"
+    t.boolean  "is_owner"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 end
