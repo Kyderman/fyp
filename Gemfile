@@ -14,6 +14,7 @@ gem 'pg'
 gem 'puma'
 gem 'pundit'
 gem 'simple_form'
+gem 'cocoon'
 gem 'therubyracer', :platform=>:ruby
 
 group :development do

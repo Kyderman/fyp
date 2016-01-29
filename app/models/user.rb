@@ -25,8 +25,10 @@ class User < ActiveRecord::Base
            -> { where(friendships: { approved: false }) },
            through: :passive_friendships, source: :user
 
+  has_many :users_teams
+  has_many :owned_teams, -> { where(users_teams: { is_owner: true }) },
+           through: :users_teams, source: :team
   has_many :teams, through: :users_teams
-  # Owned teams too?
 
   belongs_to :organisation
 

@@ -28,6 +28,7 @@ class TeamsController < ApplicationController
 
     respond_to do |format|
       if @team.save
+        current_user.owned_teams << @team
         format.html { redirect_to @team, notice: 'Team was successfully created.' }
         format.json { render :show, status: :created, location: @team }
       else
@@ -69,6 +70,6 @@ class TeamsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def team_params
-      params.require(:team).permit(:name, :sport_id)
+      params.require(:team).permit(:name, :sport_id, users_teams_attributes: [:id, :user_id, :is_owner, :done, :_destroy])
     end
 end

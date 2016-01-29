@@ -1,33 +1,41 @@
 class OrganisationsController < ApplicationController
+  before_action :authenticate_user!
+  after_action :verify_authorized
   before_action :set_organisation, only: [:show, :edit, :update, :destroy]
 
   # GET /organisations
   # GET /organisations.json
   def index
     @organisations = Organisation.all
+    authorize Organisation
   end
 
   # GET /organisations/1
   # GET /organisations/1.json
   def show
+    authorize @organisation
   end
 
   # GET /organisations/new
   def new
     @organisation = Organisation.new
+    authorize @organisation
   end
 
   # GET /organisations/1/edit
   def edit
+    authorize @organisation
   end
 
   # POST /organisations
   # POST /organisations.json
   def create
     @organisation = Organisation.new(organisation_params)
-
+    authorize Organisation
     respond_to do |format|
       if @organisation.save
+        current_user.organisation = @organisation
+        current_user.save!
         format.html { redirect_to @organisation, notice: 'Organisation was successfully created.' }
         format.json { render :show, status: :created, location: @organisation }
       else
@@ -40,6 +48,7 @@ class OrganisationsController < ApplicationController
   # PATCH/PUT /organisations/1
   # PATCH/PUT /organisations/1.json
   def update
+    authorize Organisation
     respond_to do |format|
       if @organisation.update(organisation_params)
         format.html { redirect_to @organisation, notice: 'Organisation was successfully updated.' }
@@ -54,6 +63,7 @@ class OrganisationsController < ApplicationController
   # DELETE /organisations/1
   # DELETE /organisations/1.json
   def destroy
+    authorize Organisation
     @organisation.destroy
     respond_to do |format|
       format.html { redirect_to organisations_url, notice: 'Organisation was successfully destroyed.' }
