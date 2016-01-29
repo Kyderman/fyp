@@ -20,15 +20,15 @@ puts 'CREATED USER USER: ' << user.email
 user = CreateUserService.new.call("user2@example.com", org, 'User2 Steve')
 puts 'CREATED USER USER: ' << user.email
 
-user = CreateUserService.new.call("user3@example.com", org, 'User3 Kyle')
+user = CreateUserSerrailsvice.new.call("user3@example.com", org, 'User3 Kyle')
 puts 'CREATED USER USER: ' << user.email
 
-sport = Sport.new(name: 'Football')
+sport = Sport.create(name: 'Football')
 puts 'CREATED SPORT: ' << sport.name
 
-sport = Sport.new(name: 'Rugby')
+sport = Sport.create(name: 'Rugby')
 puts 'CREATED SPORT: ' << sport.name
 
-sport = Sport.new(name: 'Pool')
+sport = Sport.create(name: 'Pool')
 puts 'CREATED SPORT: ' << sport.name
 

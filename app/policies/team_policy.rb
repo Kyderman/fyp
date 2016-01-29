@@ -7,26 +7,30 @@ class TeamPolicy
   end
 
   def index?
-
+    !@current_user.nil?
   end
 
   def show?
-
+    !@current_user.nil?
   end
 
   def new?
-
+    @current_user.user?
   end
 
   def create?
+    @current_user.user?
+  end
 
+  def edit?
+    @current_user.owned_teams.include? @team
   end
 
   def update?
-
+    @current_user.owned_teams.include? @team
   end
 
   def destroy?
-
+    @current_user.owned_teams.include? @team
   end
 end
