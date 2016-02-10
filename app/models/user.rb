@@ -30,6 +30,8 @@ class User < ActiveRecord::Base
            through: :users_teams, source: :team
   has_many :teams, through: :users_teams
 
+  has_many :competitions, through: :teams
+
   belongs_to :organisation
 
   def friends

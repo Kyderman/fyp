@@ -1,7 +1,10 @@
 <%= simple_form_for(@league) do |f| %>
   <%= f.error_notification %>
-
+  <%= f.input :win_points %>
   <div class="form-inputs">
+  <%= f.simple_fields_for(:competition) do |v| %>
+    <%= v.input :name %>
+  <% end %>
   </div>
 
   <div class="form-actions">

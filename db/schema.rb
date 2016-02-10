@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151210033557) do
+ActiveRecord::Schema.define(version: 20160210202221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20151210033557) do
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
     t.boolean  "is_individual"
+    t.integer  "owner_id"
   end
 
   create_table "cups", force: :cascade do |t|
@@ -48,6 +49,7 @@ ActiveRecord::Schema.define(version: 20151210033557) do
   create_table "leagues", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "win_points"
   end
 
   create_table "organisations", force: :cascade do |t|
@@ -78,7 +80,7 @@ ActiveRecord::Schema.define(version: 20151210033557) do
     t.boolean  "is_individual"
   end
 
-  create_table "teams_competitions", id: false, force: :cascade do |t|
+  create_table "teams_competitions", force: :cascade do |t|
     t.integer "team_id"
     t.integer "competition_id"
   end

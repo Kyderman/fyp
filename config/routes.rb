@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   resources :scores
   resources :fixtures
   resources :cups
-  resources :leagues
+  resources :leagues do
+    resources :competitions
+  end
   resources :competitions
   resources :teams
   resources :sports

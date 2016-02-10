@@ -25,7 +25,6 @@ class CompetitionsController < ApplicationController
   # POST /competitions.json
   def create
     @competition = Competition.new(competition_params)
-
     respond_to do |format|
       if @competition.save
         format.html { redirect_to @competition, notice: 'Competition was successfully created.' }
