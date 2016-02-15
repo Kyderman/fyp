@@ -1,4 +1,109 @@
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_league_path(@league) %> |
-<%= link_to 'Back', leagues_path %>
+<div class="row jumbotron text-center">
+  <h1><%=@competition.name%></h1>
+  <h2>League</h2>
+  <h3><%=@competition.sport.name%></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <h2>League Table</h2>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Team</th>
+            <th>Played</th>
+            <th>Won</th>
+            <th>Draw</th>
+            <th>Lost</th>
+            <th>G+</th>
+            <th>G-</th>
+            <th>G Dif</th>
+            <th>Pts</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%@standings.each do |team|%>
+          <%@team_object = Team.find(team[0])%>
+          <tr>
+            <td><%= link_to @team_object.name, team_path(@team_object)%></td>
+            <td><%= team[1]%></td>
+            <td><%= team[2]%></td>
+            <td><%= team[3]%></td>
+            <td><%= team[4]%></td>
+            <td><%= team[5]%></td>
+            <td><%= team[6]%></td>
+            <td><%= team[5] - team[6]%></td>
+            <td><%= team[7]%></td>
+          </tr>
+          <%end%>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <h2>Upcoming Fixtures</h2>
+    <% if !@fixtures.nil? %>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Gameweek</th>
+              <th>Home Team</th>
+              <th>Away Team</th>
+              <th>Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @fixtures.each do |fixture| %>
+              <tr>
+                <td><%=fixture.round%></td>
+                <td><%=link_to fixture.home_team.name, team_path(fixture.home_team)%></td>
+                <td><%=link_to fixture.away_teams.name, team_path(fixture.away_teams)%></td>
+                <td><%=link_to 'Enter Result', edit_fixture_path(fixture), class: 'btn btn-xs btn-success'%></td>
+              </tr>
+            <%end%>
+          </tbody>
+        </table>
+      </div>
+    <%end%>
+  </div>
+
+  <div class="col-md-6">
+    <h2>Recent Results</h2>
+     <% if !@fixtures.nil? %>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Gameweek</th>
+              <th>Home Team</th>
+              <th>Home Score</th>
+              <th>Away Team</th>
+              <th>Away Score</th>
+              <th>Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @results.each do |result| %>
+              <tr>
+                <td><%=result.round%></td>
+                <td><%=link_to result.home_team.name, team_path(result.home_team)%></td>
+                <td><%=result.scores.find_by(team: result.home_team).points%></td>
+                <td><%=link_to result.away_teams.name,  team_path(result.away_teams)%></td>
+                <td><%=result.scores.find_by(team: result.away_teams).points%></td>
+                <td><%=link_to 'Edit Result', edit_fixture_path(result), class: 'btn btn-xs btn-warning'%></td>
+              </tr>
+            <%end%>
+          </tbody>
+        </table>
+      </div>
+    <%end%>
+    
+  </div>
+</div>

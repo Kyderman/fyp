@@ -42,8 +42,9 @@ class FixturesController < ApplicationController
   def update
     respond_to do |format|
       if @fixture.update(fixture_params)
-        format.html { redirect_to @fixture, notice: 'Fixture was successfully updated.' }
-        format.json { render :show, status: :ok, location: @fixture }
+        @fixture.mark_as_complete
+        format.html { redirect_to @fixture.competition, notice: 'Fixture was successfully updated.' }
+        format.json { render :show, status: :ok, location: @fixture.competition }
       else
         format.html { render :edit }
         format.json { render json: @fixture.errors, status: :unprocessable_entity }
@@ -69,6 +70,6 @@ class FixturesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def fixture_params
-      params.require(:fixture).permit(:competition_id)
+      params.require(:fixture).permit(scores_attributes: [:id, :points])
     end
 end

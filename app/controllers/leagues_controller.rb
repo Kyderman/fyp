@@ -10,16 +10,24 @@ class LeaguesController < ApplicationController
   # GET /leagues/1
   # GET /leagues/1.json
   def show
+    @competition = @league.competition
+    @standings = @league.calculate_league_table
+    @results = @competition.results
+    @fixtures = @competition.upcoming_fixtures
   end
 
   # GET /leagues/new
   def new
     @league = League.new
     @league.build_competition
+    @competition = @league.competition
+    @competition.teams_competitions.build
+    @teams_competitions = @competition.teams_competitions
   end
 
   # GET /leagues/1/edit
   def edit
+    @competition = @league.competition
   end
 
   # POST /leagues
@@ -28,8 +36,8 @@ class LeaguesController < ApplicationController
     @league = League.new(league_params)
     respond_to do |format|
       if @league.save
-
-
+        @league.competition.update(owner: current_user)
+        @league.generate_fixtures
         format.html { redirect_to @league, notice: 'League was successfully created.' }
         format.json { render :show, status: :created, location: @league }
       else
@@ -71,6 +79,6 @@ class LeaguesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def league_params
-      params.require(:league).permit(:win_points, competition_attributes: [:name])
+      params.require(:league).permit(:win_points, competition_attributes: [:id, :name, :sport_id, teams_competitions_attributes: [:id, :team_id, :competition_id, :_destroy]])
     end
 end

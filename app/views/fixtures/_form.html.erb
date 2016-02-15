@@ -2,7 +2,12 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :competition_id %>
+    <%= f.simple_fields_for :scores do |score_fields| %>
+      <div class="col-md-6 text-center">
+      <h3><%=score_fields.object.team.name + ' Score'%></h3>
+      <%=score_fields.input :points, label: false%>
+      </div>
+    <%end%>
   </div>
 
   <div class="form-actions">

@@ -1,24 +1,5 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @competition.name %>
-</p>
-
-<p>
-  <strong>Sport:</strong>
-  <%= @competition.sport_id %>
-</p>
-
-<p>
-  <strong>Competition format:</strong>
-  <%= @competition.competition_format_id %>
-</p>
-
-<p>
-  <strong>Competition format type:</strong>
-  <%= @competition.competition_format_type %>
-</p>
-
-<%= link_to 'Edit', edit_competition_path(@competition) %> |
-<%= link_to 'Back', competitions_path %>
+<div class="row jumbotron text-center">
+  <h1><%=@competition.name%></h1>
+</div>

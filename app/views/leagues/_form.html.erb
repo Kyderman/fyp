@@ -1,10 +1,21 @@
 <%= simple_form_for(@league) do |f| %>
   <%= f.error_notification %>
-  <%= f.input :win_points %>
   <div class="form-inputs">
-  <%= f.simple_fields_for(:competition) do |v| %>
-    <%= v.input :name %>
-  <% end %>
+    <%= f.simple_fields_for(:competition) do |v| %>
+      <%= v.input :name %>
+      <%= v.association :sport %>
+      <h3>Teams</h3>
+      <div id="teams_competitions">
+        <%= v.simple_fields_for :teams_competitions do |a| %>
+          <%= render 'teams_competition_fields', v: a, f: a %>
+        <%end%>
+        <div class="links">
+          <%= link_to_add_association 'Add Team', v, :teams_competitions, class: 'btn btn-success'%>
+          </br>
+        </div>
+      </div>
+    <% end %>
+   <%= f.input :win_points %> 
   </div>
 
   <div class="form-actions">

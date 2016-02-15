@@ -14,21 +14,33 @@ puts 'CREATED ORGANISER USER: ' << user.email
 org = CreateOrganisationService.new.call(user, "Bath")
 puts 'CREATED ORGANISATION: ' << org.name << " ORGANISER: " << user.email
 
-user = CreateUserService.new.call("user1@example.com", org, 'User1 John')
-puts 'CREATED USER USER: ' << user.email
+user1 = CreateUserService.new.call("user1@example.com", org, 'User1 John')
+puts 'CREATED USER USER: ' << user1.email
 
-user = CreateUserService.new.call("user2@example.com", org, 'User2 Steve')
-puts 'CREATED USER USER: ' << user.email
+user2 = CreateUserService.new.call("user2@example.com", org, 'User2 Steve')
+puts 'CREATED USER USER: ' << user2.email
 
-user = CreateUserService.new.call("user3@example.com", org, 'User3 Kyle')
-puts 'CREATED USER USER: ' << user.email
+user3 = CreateUserService.new.call("user3@example.com", org, 'User3 Kyle')
+puts 'CREATED USER USER: ' << user3.email
 
-sport = Sport.create(name: 'Football')
-puts 'CREATED SPORT: ' << sport.name
+sport1 = Sport.create(name: 'Football')
+puts 'CREATED SPORT: ' << sport1.name
 
-sport = Sport.create(name: 'Rugby')
-puts 'CREATED SPORT: ' << sport.name
+sport2 = Sport.create(name: 'Rugby')
+puts 'CREATED SPORT: ' << sport2.name
 
-sport = Sport.create(name: 'Pool')
-puts 'CREATED SPORT: ' << sport.name
+sport3 = Sport.create(name: 'Pool')
+puts 'CREATED SPORT: ' << sport3.name
+
+team = Team.create(name: 'Manchester United', sport: sport1)
+puts 'CREATED TEAM: ' << team.name
+user1.owned_teams << team
+
+team = Team.create(name: 'Liverpool', sport: sport1)
+puts 'CREATED TEAM: ' << team.name
+user1.owned_teams << team
+
+team = Team.create(name: 'Arsenal', sport: sport1)
+puts 'CREATED TEAM: ' << team.name
+user1.owned_teams << team
 
