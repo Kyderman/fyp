@@ -42,6 +42,7 @@ class FixturesController < ApplicationController
   def update
     respond_to do |format|
       if @fixture.update(fixture_params)
+        @fixture.competition.update_progression(@fixture)
         @fixture.mark_as_complete
         format.html { redirect_to @fixture.competition, notice: 'Fixture was successfully updated.' }
         format.json { render :show, status: :ok, location: @fixture.competition }

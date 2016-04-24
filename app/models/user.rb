@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  enum role: [:user, :admin, :organiser]
+  enum role: [:user, :admin]
   #after_initialize :set_default_role, if: :new_record?
 
   def set_default_role
@@ -32,9 +32,19 @@ class User < ActiveRecord::Base
 
   has_many :competitions, through: :teams
 
-  belongs_to :organisation
-
   def friends
     active_friends | passive_friends
+  end
+
+  def get_upcoming_fixtures
+    teams.each do |t|
+
+    end
+  end
+
+  def get_results
+    teams.each do |t|
+
+    end
   end
 end

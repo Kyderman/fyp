@@ -1,5 +1,10 @@
 class FriendshipsController < ApplicationController
+  def index
+    @friends = current_user.passive_friends + current_user.active_friends
 
+    @sent = current_user.pending_friends
+    @received = current_user.requested_friendships
+  end
   # POST /friendships
   # POST /friendships.json
   def create
@@ -21,9 +26,9 @@ class FriendshipsController < ApplicationController
                                    user_id: params[:id]).first
     @friendship.update(approved: true)
     if @friendship.save
-      redirect_to root_url, notice: 'Successfully confirmed friend!'
+      redirect_to :back, notice: 'Successfully confirmed friend!'
     else
-      redirect_to root_url, notice: 'Sorry! Could not confirm friend!'
+      redirect_to :back, notice: 'Sorry! Could not confirm friend!'
     end
   end
 

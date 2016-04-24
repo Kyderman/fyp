@@ -21,6 +21,7 @@ group :development do
   gem 'rubocop'
   gem 'web-console', '~> 2.0'
   gem 'spring'
+  gem 'bullet'
   gem 'better_errors'
   gem 'guard-bundler'
   gem 'guard-rails'

@@ -12,8 +12,16 @@ Rails.application.routes.draw do
   resources :teams
   resources :sports
   resources :organisations
-  root to: 'visitors#index'
+  resources :team_shouts
+  resources :competition_shouts
+
   devise_for :users
 
   resources :users
+
+  authenticated do
+  root to: "users#show", as: :authenticated_root
+  end
+
+  root to: 'visitors#index'
 end

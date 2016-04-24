@@ -1,4 +1,4 @@
-<p id="notice"><%= notice %></p>
+
 
 <div class="row jumbotron text-center">
   <h1><%=@competition.name%></h1>
@@ -7,7 +7,7 @@
 </div>
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-8">
     <h2>League Table</h2>
     <div class="table-responsive">
       <table class="table table-bordered">
@@ -41,6 +41,40 @@
           <%end%>
         </tbody>
       </table>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Notifications</h3>
+      </div>
+      <div class="panel-body">
+       
+        <ul class="list-group">
+          <% @notifications.each do |shout| %>
+            
+            <li class="list-group-item"><%=shout.body%>
+            <hr>
+            <%=link_to shout.user.name, user_path(shout.user), class: 'btn btn-info btn-xs'%>
+            </li>
+            
+          <%end%>
+        </ul>
+      </div>
+      <%if @competition.owner == current_user %>
+      <%= simple_form_for @notification, :url => competition_shouts_path, :method => :post do |f| %>
+        <%= f.error_notification %>
+
+        <div class="co;-md-12">
+          <%= f.input :body, label: false, placeholder: 'Insert a new message...' %>
+          <%= f.input :competition_id, :as => :hidden, :input_html => { :value => @competition.id} %>
+        </div>
+
+        <div class="form-actions">
+          <%= f.submit "Submit", class: 'btn btn-block btn-success' %>
+        </div>
+      <% end %>
+      <%end%>
     </div>
   </div>
 </div>

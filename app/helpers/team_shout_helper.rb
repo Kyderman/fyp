@@ -1,0 +1,2 @@
+module TeamShoutHelper
+end

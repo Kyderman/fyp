@@ -8,19 +8,13 @@
 user = CreateAdminService.new.call
 puts 'CREATED ADMIN USER: ' << user.email
 
-user = CreateOrganiserService.new.call("organiser@example.com")
-puts 'CREATED ORGANISER USER: ' << user.email
-
-org = CreateOrganisationService.new.call(user, "Bath")
-puts 'CREATED ORGANISATION: ' << org.name << " ORGANISER: " << user.email
-
-user1 = CreateUserService.new.call("user1@example.com", org, 'User1 John')
+user1 = CreateUserService.new.call("user1@example.com", 'User1 John')
 puts 'CREATED USER USER: ' << user1.email
 
-user2 = CreateUserService.new.call("user2@example.com", org, 'User2 Steve')
+user2 = CreateUserService.new.call("user2@example.com", 'User2 Steve')
 puts 'CREATED USER USER: ' << user2.email
 
-user3 = CreateUserService.new.call("user3@example.com", org, 'User3 Kyle')
+user3 = CreateUserService.new.call("user3@example.com", 'User3 Kyle')
 puts 'CREATED USER USER: ' << user3.email
 
 sport1 = Sport.create(name: 'Football')
@@ -43,4 +37,33 @@ user1.owned_teams << team
 team = Team.create(name: 'Arsenal', sport: sport1)
 puts 'CREATED TEAM: ' << team.name
 user1.owned_teams << team
+
+team = Team.create(name: 'Leicester City', sport: sport1)
+puts 'CREATED TEAM: ' << team.name
+user1.owned_teams << team
+
+team = Team.create(name: 'Chelsea', sport: sport1)
+puts 'CREATED TEAM: ' << team.name
+user1.owned_teams << team
+
+team = Team.create(name: 'Manchester City', sport: sport1)
+puts 'CREATED TEAM: ' << team.name
+user1.owned_teams << team
+
+team = Team.create(name: 'Tottenham Hotspur', sport: sport1)
+puts 'CREATED TEAM: ' << team.name
+user1.owned_teams << team
+
+team = Team.create(name: 'West Ham', sport: sport1)
+puts 'CREATED TEAM: ' << team.name
+user1.owned_teams << team
+
+team = Team.create(name: 'Newcastle United', sport: sport1)
+puts 'CREATED TEAM: ' << team.name
+user1.owned_teams << team
+
+team = Team.create(name: 'Aston Villa', sport: sport1)
+puts 'CREATED TEAM: ' << team.name
+user1.owned_teams << team
+
 

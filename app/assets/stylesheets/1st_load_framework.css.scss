@@ -17,5 +17,19 @@ body {
   @extend .container;
   padding-bottom: 80px;
   width: 100%;
-  margin-top: 41px; // accommodate the navbar
+  margin-top: 51px; // accommodate the navbar
+  
+  
+}
+
+* {
+  border-radius: 0 !important;
+}
+
+.list-group-item {
+  word-wrap: break-word;
+}
+
+.alert {
+  margin-bottom: 0;
 }

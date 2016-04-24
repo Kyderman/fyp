@@ -13,7 +13,11 @@ class TeamsController < ApplicationController
   # GET /teams/1
   # GET /teams/1.json
   def show
-    authorize Team
+    authorize @team
+    @competitions = @team.competitions.includes(:competition_format)
+    @notification = TeamShout.new
+    @notifications = @team.team_shouts.includes(:user).reverse
+    @members = @team.members
   end
 
   # GET /teams/new

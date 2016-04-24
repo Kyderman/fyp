@@ -1,3 +1,77 @@
-<h3>User</h3>
-<p>Name: <%= @user.name if @user.name %></p>
-<p>Email: <%= @user.email if @user.email %></p>
+
+
+<div class="row jumbotron text-center">
+  <%if @is_home %>
+    <h1>Welcome, <%= @user.name%></h1>
+  <%else%>
+    <h1><%=@user.name%></h1>
+  <%end%>
+  <%if @user != current_user%>
+    <%if current_user.pending_friends.include?(@user)%>
+      <%= link_to 'Remove Friend Request', friendship_path(friend_id: @user), method: :delete, class: 'btn btn-danger' %>
+    <%elsif current_user.requested_friendships.include?(@user)%>
+      <%= link_to 'Accept Friend Request', friendship_path(friend_id: @user), method: :put, class: 'btn btn-warning' %>
+    <%elsif current_user.passive_friends.include?(@user) || current_user.friendships.include?(@user)%>
+      <button type="button" class="btn btn-md btn-success" disabled="disabled">Friends <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> </button>
+      <%= link_to friendship_path(friend_id: @user), method: :delete, class: "btn btn-danger" do %>
+        Remove Friend <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+      <% end %>
+    <%else%>
+      <%= link_to 'Add Friend', friendships_path(friend_id: @user), method: :post, class: 'btn btn-success' %>
+    <%end%>
+  <%end%>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Teams</h3>
+      </div>
+      <div class="panel-body">
+        <div class="list-group">
+          <% @teams.each do |team| %>
+            <%= link_to team_path(team), class: 'list-group-item' do %>
+              <% if @user.owned_teams.include?(team) %>
+                <span class="badge"><span class="glyphicon glyphicon-castle" aria-hidden="true"></span></span>
+              <%end%>
+              <h4 class="list-group-item-heading"><%=team.name%></h4>
+              <p class="list-group-item-text"><%=team.sport.name%></p>
+            <% end %>
+          <%end%>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Competitions</h3>
+      </div>
+      <div class="panel-body">
+
+        <div class="list-group">
+          <% @competitions.each do |comp| %>
+            <%= link_to competition_path(comp), class: 'list-group-item' do %>
+              <h4 class="list-group-item-heading"><%=comp.name%></h4>
+              <p class="list-group-item-text"><b><%=comp.competition_format_type%></b> - <%=comp.sport.name%></p>
+              <hr>
+              <ul class="list-group">
+              <% @teams.each do |team| %>
+                
+                <% if comp.teams.include?(team) %>
+                   <li class="list-group-item"><%=team.name%><span class="badge"><%=LeagueTable.where(team: team, league:comp.competition_format).first.position.ordinalize%></span></li>
+                <%end%>
+                
+              <%end%>
+              </ul>
+            <% end %>
+          <%end%>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

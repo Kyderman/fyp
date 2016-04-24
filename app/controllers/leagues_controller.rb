@@ -11,9 +11,11 @@ class LeaguesController < ApplicationController
   # GET /leagues/1.json
   def show
     @competition = @league.competition
-    @standings = @league.calculate_league_table
+    @standings = @league.get_table
     @results = @competition.results
     @fixtures = @competition.upcoming_fixtures
+    @notification = CompetitionShout.new
+    @notifications = @competition.competition_shouts.includes(:user).reverse
   end
 
   # GET /leagues/new
@@ -37,6 +39,7 @@ class LeaguesController < ApplicationController
     respond_to do |format|
       if @league.save
         @league.competition.update(owner: current_user)
+        @league.create_league
         @league.generate_fixtures
         format.html { redirect_to @league, notice: 'League was successfully created.' }
         format.json { render :show, status: :created, location: @league }

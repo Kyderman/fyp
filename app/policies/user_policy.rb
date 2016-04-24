@@ -10,12 +10,14 @@ class UserPolicy
     @current_user.admin?
   end
 
-  def show?
-    @current_user.admin? || @current_user == @user
-  end
+
 
   def update?
     @current_user.admin?
+  end
+
+  def dashboard?
+    @current_user.admin? || @current_user == @user
   end
 
   def destroy?

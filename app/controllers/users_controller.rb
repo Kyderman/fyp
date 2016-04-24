@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  after_action :verify_authorized
+  after_action :verify_authorized, except: :show
 
   def index
     @users = User.all
@@ -8,8 +8,17 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
-    authorize @user
+    @is_home = false
+    if params[:id]
+      @user = User.find(params[:id])
+    else
+      @user = current_user
+      @is_home = true
+    end
+
+    @teams = @user.teams.includes(:sport)
+    @competitions = @user.competitions.includes(:sport).includes(:teams).includes(:competition_format)
+
   end
 
   def update
@@ -32,7 +41,7 @@ class UsersController < ApplicationController
   private
 
   def secure_params
-    params.require(:user).permit(:role, :organisation_id)
+    params.require(:user).permit(:role)
   end
 
 end

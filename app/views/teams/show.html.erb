@@ -1,14 +1,94 @@
-<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @team.name %>
-</p>
 
-<p>
-  <strong>Sport:</strong>
-  <%= @team.sport_id %>
-</p>
+<div class="row jumbotron text-center">
+  <h1><%= @team.name%></h1>
+  <h3><%= @team.sport.name%></h3>
+</div>
 
-<%= link_to 'Edit', edit_team_path(@team) %> |
-<%= link_to 'Back', teams_path %>
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Competitions</h3>
+      </div>
+      <div class="panel-body">
+       
+        <ul class="list-group">
+          <% @competitions.each do |comp| %>
+            <%= link_to competition_path(comp), class: 'list-group-item' do %>
+              <b><%=comp.name%></b>
+              <span class="badge"><%=LeagueTable.where(team: @team, league:comp.competition_format).first.position.ordinalize%></span>
+              </br>
+              <%=comp.competition_format_type%>
+            <%end%>
+          <%end%>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Notifications</h3>
+      </div>
+      <div class="panel-body">
+       
+        <ul class="list-group">
+          <% @notifications.each do |shout| %>
+            
+            <li class="list-group-item"><%=shout.body%>
+            <hr>
+            <%=link_to shout.user.name, user_path(shout.user), class: 'btn btn-info btn-xs'%>
+            </li>
+            
+          <%end%>
+        </ul>
+      </div>
+      <%if @members.include?(current_user) %>
+      <%= simple_form_for @notification, :url => team_shouts_path, :method => :post do |f| %>
+        <%= f.error_notification %>
+
+        <div class="co;-md-12">
+          <%= f.input :body, label: false, placeholder: 'Insert a new message...' %>
+          <%= f.input :team_id, :as => :hidden, :input_html => { :value => @team.id} %>
+        </div>
+
+        <div class="form-actions">
+          <%= f.submit "Submit", class: 'btn btn-block btn-success' %>
+        </div>
+      <% end %>
+      <%end%>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Team Members</h3>
+      </div>
+      <div class="panel-body">
+       
+        <ul class="list-group">
+          <% @members.each do |m| %>
+            <%= link_to user_path(m), class: 'list-group-item' do %>
+              <b><%=m.name%></b>
+              <% if @team.owners.include?(m) %>
+              <span class="badge"><span class="glyphicon glyphicon-tower" aria-hidden="true"></span></span>
+              <%end%>
+              <br>
+              <%=m.email%>
+            <%end%>
+          <%end%>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    
+  
+</div>
+
+
+

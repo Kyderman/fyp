@@ -1,31 +1,77 @@
-<p id="notice"><%= notice %></p>
 
-<h1>Listing Friendships</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Friend</th>
-      <th>Approved</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class="row jumbotron text-center">
+  
+  <h1>Friends</h1>
+ 
+</div>
 
-  <tbody>
-    <% @friendships.each do |friendship| %>
-      <tr>
-        <td><%= friendship.user_id %></td>
-        <td><%= friendship.friend_id %></td>
-        <td><%= friendship.approved %></td>
-        <td><%= link_to 'Show', friendship %></td>
-        <td><%= link_to 'Edit', edit_friendship_path(friendship) %></td>
-        <td><%= link_to 'Destroy', friendship, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="row">
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Friends</h3>
+      </div>
+      <div class="panel-body">
+      <%if @received.empty?%>
+        You have no friends.
+      <%end%>
+      <% @friends.each do |f| %>
+         <div class="btn-group btn-group-justified" role="group">
+            <%= link_to user_path(f), class: 'btn btn-default' do %>
+              <%=f.name%>
+            <%end%>
+            <%= link_to 'Remove Friend', friendship_path(f), method: :delete, class: 'btn btn-danger' %>
+          </div>
+        
+        <%end%>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Requests Received</h3>
+      </div>
+      <div class="panel-body">
+          <%if @received.empty?%>
+          You currently have no requests.
+          <%end%>
+        
+          <% @received.each do |r| %>
+             <div class="btn-group btn-group-justified" role="group">
+            <%= link_to user_path(r), class: 'btn btn-default' do %>
+              <%=r.name%>
+            <%end%>
+             <%= link_to 'Accept Friend Request', friendship_path(r), method: :put, class: 'btn btn-warning' %>
+          </div>
+          <%end%>
+        
+      </div>
+    </div>
+  </div>
 
-<br>
-
-<%= link_to 'New Friendship', new_friendship_path %>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Requests Sent</h3>
+      </div>
+      <div class="panel-body">
+        <%if @received.empty?%>
+          You have not sent any requests.
+          <%end%>
+       
+          <% @sent.each do |s| %>
+          <div class="btn-group btn-group-justified" role="group">
+            <%= link_to user_path(s), class: 'btn btn-default' do %>
+              <%=s.name%>
+            <%end%>
+             <%= link_to 'Remove Friend Request', friendship_path(s), method: :delete, class: 'btn btn-danger' %>
+          </div>
+             
+          <%end%>
+        
+      </div>
+    </div>
+  </div>
+</div>
