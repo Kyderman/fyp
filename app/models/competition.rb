@@ -25,4 +25,14 @@ class Competition < ActiveRecord::Base
       competition_format.calculate_result(fixture)
     end
   end
+
+  def self.search(search, sport)
+
+    res = Competition.where("name ILIKE ?", "%#{search}%")
+
+    if !sport.empty?
+      res = res.where(sport: sport)
+    end
+    return res
+  end
 end

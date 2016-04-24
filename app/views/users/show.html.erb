@@ -11,7 +11,7 @@
       <%= link_to 'Remove Friend Request', friendship_path(friend_id: @user), method: :delete, class: 'btn btn-danger' %>
     <%elsif current_user.requested_friendships.include?(@user)%>
       <%= link_to 'Accept Friend Request', friendship_path(friend_id: @user), method: :put, class: 'btn btn-warning' %>
-    <%elsif current_user.passive_friends.include?(@user) || current_user.friendships.include?(@user)%>
+    <%elsif current_user.passive_friends.include?(@user) || current_user.active_friends.include?(@user)%>
       <button type="button" class="btn btn-md btn-success" disabled="disabled">Friends <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> </button>
       <%= link_to friendship_path(friend_id: @user), method: :delete, class: "btn btn-danger" do %>
         Remove Friend <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
@@ -33,7 +33,7 @@
           <% @teams.each do |team| %>
             <%= link_to team_path(team), class: 'list-group-item' do %>
               <% if @user.owned_teams.include?(team) %>
-                <span class="badge"><span class="glyphicon glyphicon-castle" aria-hidden="true"></span></span>
+                <span class="badge"><span class="glyphicon glyphicon-tower" aria-hidden="true"></span></span>
               <%end%>
               <h4 class="list-group-item-heading"><%=team.name%></h4>
               <p class="list-group-item-text"><%=team.sport.name%></p>
@@ -55,12 +55,13 @@
             <%= link_to competition_path(comp), class: 'list-group-item' do %>
               <h4 class="list-group-item-heading"><%=comp.name%></h4>
               <p class="list-group-item-text"><b><%=comp.competition_format_type%></b> - <%=comp.sport.name%></p>
+              
               <hr>
               <ul class="list-group">
               <% @teams.each do |team| %>
                 
                 <% if comp.teams.include?(team) %>
-                   <li class="list-group-item"><%=team.name%><span class="badge"><%=LeagueTable.where(team: team, league:comp.competition_format).first.position.ordinalize%></span></li>
+                   <li class="list-group-item"><%=team.name%><span class="badge"><%=LeagueTable.where(team: team, league:comp.competition_format).first.position.ordinalize unless !comp.is_underway%></span></li>
                 <%end%>
                 
               <%end%>

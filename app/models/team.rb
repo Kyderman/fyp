@@ -25,4 +25,14 @@ class Team < ActiveRecord::Base
     competitions.each do |c|
     end
   end
+
+  def self.search(search, sport)
+
+    res = Team.where("name ILIKE ?", "%#{search}%")
+
+    if !sport.empty?
+      res = res.where(sport: sport)
+    end
+    return res
+  end
 end

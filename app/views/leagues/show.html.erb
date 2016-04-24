@@ -1,46 +1,143 @@
 
 
-<div class="row jumbotron text-center">
-  <h1><%=@competition.name%></h1>
-  <h2>League</h2>
-  <h3><%=@competition.sport.name%></h3>
+<div class="row jumbotron">
+  <div class="col-md-6">
+    <h1><%=@competition.name%></h1>
+    <h2>League</h2>
+    <h3><%=@competition.sport.name%></h3>
+    <p><%=@competition.description%></p>
+  </div>
+  <div class="col-md-6">
+    <%if !@competition.is_underway%>
+      <%if current_user == @competition.owner%>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Admin Tools</h3>
+          </div>
+          <div class="panel-body">
+            <%=link_to 'Start Competition!', league_begin_path, class: 'btn btn-success'%>
+            <%=link_to 'Edit', edit_league_path(@league), class: 'btn btn-warning'%>
+            <%=link_to 'Remove', league_path(@league), method: :delete, class: 'btn btn-danger'%>
+          </div>
+        </div>
+      <%else%>
+        
+      <%end%>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-success">
+            <div class="panel-heading">
+              <h3 class="panel-title">Team Registration</h3>
+            </div>
+            <div class="panel-body">
+            </div>
+            <%= simple_form_for '', :url => league_register_path, :method => :get do |f| %>
+              <%= f.error_notification %>
+
+              <div class="col-md-12">
+                <%= f.input :team_id, label: false, :include_blank => "Select Team", collection: current_user.owned_teams.where.not(id: @competition.teams) %>
+              </div>
+
+              <div class="form-actions">
+                <%= f.submit "Register Team", class: 'btn btn-block btn-success' %>
+              </div>
+            <%end%>
+          </div>
+        </div>
+         <div class="col-md-6">
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <h3 class="panel-title">Team Removal</h3>
+            </div>
+            <div class="panel-body">
+            </div>
+            <%= simple_form_for '', :url => league_unregister_path, :method => :get do |f| %>
+              <%= f.error_notification %>
+
+              <div class="col-md-12">
+                <%= f.input :team_id, label: false, :include_blank => "Select Team", collection: @competition.teams.where(id: current_user.owned_teams) %>
+              </div>
+
+              <div class="form-actions">
+                <%= f.submit "Remove Team", class: 'btn btn-block btn-danger' %>
+              </div>
+            <%end%>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-success">
+            <div class="panel-heading">
+              <h3 class="panel-title">Registration Open</h3>
+            </div>
+            <div class="panel-body">
+              <p>Current Teams: <%=@competition.teams.count%></p>
+              <p>Maximum Teams: <%=@competition.maximum_teams%></p>
+              <p>Approximate Start Date: <%=@competition.closing_date%></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    <%else%>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+              <h3 class="panel-title">Registration Closed</h3>
+            </div>
+            <div class="panel-body">
+              <p>Current Teams: <%=@competition.teams.count%></p>
+              <p>Maximum Teams: <%=@competition.maximum_teams%></p>
+              <p>Approximate Start Date: <%=@competition.closing_date%></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    <%end%>
+  </div>
 </div>
 
 <div class="row">
   <div class="col-md-8">
-    <h2>League Table</h2>
-    <div class="table-responsive">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Team</th>
-            <th>Played</th>
-            <th>Won</th>
-            <th>Draw</th>
-            <th>Lost</th>
-            <th>G+</th>
-            <th>G-</th>
-            <th>G Dif</th>
-            <th>Pts</th>
-          </tr>
-        </thead>
-        <tbody>
-          <%@standings.each do |team|%>
-          <%@team_object = Team.find(team[0])%>
-          <tr>
-            <td><%= link_to @team_object.name, team_path(@team_object)%></td>
-            <td><%= team[1]%></td>
-            <td><%= team[2]%></td>
-            <td><%= team[3]%></td>
-            <td><%= team[4]%></td>
-            <td><%= team[5]%></td>
-            <td><%= team[6]%></td>
-            <td><%= team[5] - team[6]%></td>
-            <td><%= team[7]%></td>
-          </tr>
-          <%end%>
-        </tbody>
-      </table>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">League Table</h3>
+      </div>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Team</th>
+              <th>Played</th>
+              <th>Won</th>
+              <th>Draw</th>
+              <th>Lost</th>
+              <th>G+</th>
+              <th>G-</th>
+              <th>G Dif</th>
+              <th>Pts</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%@standings.each do |team|%>
+            <%@team_object = Team.find(team[0])%>
+            <tr>
+              <td><%= link_to @team_object.name, team_path(@team_object)%></td>
+              <td><%= team[1]%></td>
+              <td><%= team[2]%></td>
+              <td><%= team[3]%></td>
+              <td><%= team[4]%></td>
+              <td><%= team[5]%></td>
+              <td><%= team[6]%></td>
+              <td><%= team[5] - team[6]%></td>
+              <td><%= team[7]%></td>
+            </tr>
+            <%end%>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
   <div class="col-md-4">
@@ -62,18 +159,18 @@
         </ul>
       </div>
       <%if @competition.owner == current_user %>
-      <%= simple_form_for @notification, :url => competition_shouts_path, :method => :post do |f| %>
-        <%= f.error_notification %>
+        <%= simple_form_for @notification, :url => competition_shouts_path, :method => :post do |f| %>
+          <%= f.error_notification %>
 
-        <div class="co;-md-12">
-          <%= f.input :body, label: false, placeholder: 'Insert a new message...' %>
-          <%= f.input :competition_id, :as => :hidden, :input_html => { :value => @competition.id} %>
-        </div>
+          <div class="col-md-12">
+            <%= f.input :body, label: false, placeholder: 'Insert a new message...' %>
+            <%= f.input :competition_id, :as => :hidden, :input_html => { :value => @competition.id} %>
+          </div>
 
-        <div class="form-actions">
-          <%= f.submit "Submit", class: 'btn btn-block btn-success' %>
-        </div>
-      <% end %>
+          <div class="form-actions">
+            <%= f.submit "Submit", class: 'btn btn-block btn-success' %>
+          </div>
+        <% end %>
       <%end%>
     </div>
   </div>
@@ -81,8 +178,11 @@
 
 <div class="row">
   <div class="col-md-6">
-    <h2>Upcoming Fixtures</h2>
-    <% if !@fixtures.nil? %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Fixtures</h3>
+      </div>
+      <% if !@fixtures.nil? %>
       <div class="table-responsive">
         <table class="table table-bordered">
           <thead>
@@ -106,10 +206,14 @@
         </table>
       </div>
     <%end%>
+    </div>
   </div>
 
   <div class="col-md-6">
-    <h2>Recent Results</h2>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Results</h3>
+      </div>
      <% if !@fixtures.nil? %>
       <div class="table-responsive">
         <table class="table table-bordered">
@@ -138,6 +242,6 @@
         </table>
       </div>
     <%end%>
-    
+    </div>
   </div>
 </div>

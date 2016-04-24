@@ -3,7 +3,10 @@
   <div class="form-inputs">
     <%= f.simple_fields_for(:competition) do |v| %>
       <%= v.input :name %>
+      <%= v.input :description%>
       <%= v.association :sport %>
+      <%= v.input :maximum_teams %>
+      <%= v.input :closing_date %>
       <h3>Teams</h3>
       <div id="teams_competitions">
         <%= v.simple_fields_for :teams_competitions do |a| %>

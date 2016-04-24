@@ -1,29 +1,42 @@
-<p id="notice"><%= notice %></p>
 
-<h1>Listing Teams</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Sport</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @teams.each do |team| %>
-      <tr>
-        <td><%= team.name %></td>
-        <td><%= team.sport_id %></td>
-        <td><%= link_to 'Show', team %></td>
-        <td><%= link_to 'Edit', edit_team_path(team) %></td>
-        <td><%= link_to 'Destroy', team, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+<div class="row jumbotron text-center">
+  <h1>Team Search</h1>
+  <div class="col-md-offset-4 col-md-4">
+    <%= simple_form_for '', :method => 'get' do |f| %>
+      <%= f.input :search, label: false, placeholder: 'Enter search term...' %>
+      <%= f.input :sport, label: false, :include_blank => "Select Sport...", collection: Sport.all %>
+      <%= f.button :submit, "Search", class: 'btn btn-block btn-success' %>
     <% end %>
-  </tbody>
-</table>
+  </div>
+</div>
 
-<br>
+<div class="row">
+  <div class="col-md-offset-4 col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Search Results</h3>
+      </div>
+      <div class="panel-body">
+        <%if @search == false%>
+          <p>Please enter a search term to start...</p>
+        <%else%>
+          <%if @teams.empty?%>
+            <p>No results found...</p>
+          <%else%>
+            <ul class="list-group">
+              <%@teams.each do |t|%>
+                <%= link_to team_path(t), class: 'list-group-item' do %>
+                  <%=t.name%>
+                <%end%>
+              <%end%>
+            </ul>
+          <%end%>
+        <%end%>
+      </div>
+    </div>
+  </div>
+</div>
 
-<%= link_to 'New Team', new_team_path %>
+
+

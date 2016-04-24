@@ -1,16 +1,41 @@
-<div class="container">
-  <div class="row">
-    <h3>Users</h3>
-    <div class="column">
-      <table class="table">
-        <tbody>
-          <% @users.each do |user| %>
-            <tr>
-              <%= render user %>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+
+
+<div class="row jumbotron text-center">
+  <h1>User Search</h1>
+  <div class="col-md-offset-4 col-md-4">
+    <%= simple_form_for '', :method => 'get' do |f| %>
+      <%= f.input :search, label: false, placeholder: 'Enter search term...' %>
+      <%= f.button :submit, "Search", class: 'btn btn-block btn-success' %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-offset-4 col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Search Results</h3>
+      </div>
+      <div class="panel-body">
+        <%if @search == false%>
+          <p>Please enter a search term to start...</p>
+        <%else%>
+          <%if @users.empty?%>
+            <p>No results found...</p>
+          <%else%>
+            <ul class="list-group">
+              <%@users.each do |u|%>
+                <%= link_to user_path(u), class: 'list-group-item' do %>
+                  <%=u.name%>
+                <%end%>
+              <%end%>
+            </ul>
+          <%end%>
+        <%end%>
+      </div>
     </div>
   </div>
 </div>
+
+
+

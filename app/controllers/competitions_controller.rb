@@ -4,7 +4,13 @@ class CompetitionsController < ApplicationController
   # GET /competitions
   # GET /competitions.json
   def index
-    @competitions = Competition.all
+    if params[:search]
+      @competitions = Competition.search(params[:search], params[:sport]).order("created_at DESC")
+      @search = true
+    else
+      @competitions = []
+      @search = false
+    end
   end
 
   # GET /competitions/1

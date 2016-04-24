@@ -6,7 +6,13 @@ class TeamsController < ApplicationController
   # GET /teams
   # GET /teams.json
   def index
-    @teams = Team.all
+    if params[:search]
+      @teams = Team.search(params[:search], params[:sport]).order("created_at DESC")
+      @search = true
+    else
+      @teams = []
+      @search = false
+    end
     authorize Team
   end
 

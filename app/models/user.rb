@@ -47,4 +47,12 @@ class User < ActiveRecord::Base
 
     end
   end
+
+
+
+def self.search(search)
+  where("name ILIKE ? OR email ILIKE ?", "%#{search}%","%#{search}%")
+end
+
+
 end

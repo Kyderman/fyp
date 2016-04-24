@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :fixtures
   resources :cups
   resources :leagues do
+
     resources :fixtures
   end
   resources :competitions do
@@ -24,4 +25,11 @@ Rails.application.routes.draw do
   end
 
   root to: 'visitors#index'
+
+get 'leagues/:id/begin', :to => 'leagues#start', as: 'league_begin'
+get 'leagues/:id/league_register', :to => 'leagues#register', as: 'league_register'
+
+get 'league_unregister/:id', :to => 'leagues#unregister', as: 'league_unregister'
+
+
 end

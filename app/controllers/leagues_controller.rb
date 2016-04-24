@@ -1,5 +1,5 @@
 class LeaguesController < ApplicationController
-  before_action :set_league, only: [:show, :edit, :update, :destroy]
+  before_action :set_league, only: [:show, :edit, :update, :destroy, :register, :unregister, :start]
 
   # GET /leagues
   # GET /leagues.json
@@ -16,6 +16,7 @@ class LeaguesController < ApplicationController
     @fixtures = @competition.upcoming_fixtures
     @notification = CompetitionShout.new
     @notifications = @competition.competition_shouts.includes(:user).reverse
+
   end
 
   # GET /leagues/new
@@ -39,8 +40,8 @@ class LeaguesController < ApplicationController
     respond_to do |format|
       if @league.save
         @league.competition.update(owner: current_user)
-        @league.create_league
-        @league.generate_fixtures
+        #@league.create_league
+        #@league.generate_fixtures
         format.html { redirect_to @league, notice: 'League was successfully created.' }
         format.json { render :show, status: :created, location: @league }
       else
@@ -74,6 +75,33 @@ class LeaguesController < ApplicationController
     end
   end
 
+  def register
+    @team = Team.find(params[:team_id])
+    @league.competition.teams_competitions.build(team: @team)
+    @league.competition.save!
+    if @league.competition.teams.count == @league.competition.maximum_teams
+      @league.create_league
+      @league.generate_fixtures
+      @league.competition.is_underway = true
+      @league.competition.save!
+    end
+    redirect_to :back, notice: 'You are registered for the league.'
+  end
+
+  def unregister
+    @team = Team.find(params[:team_id])
+    @league.competition.teams.delete(@team)
+    redirect_to :back, notice: 'You are no longer registered for this league.'
+  end
+
+  def start
+    @league.create_league
+    @league.generate_fixtures
+    @league.competition.is_underway = true
+    @league.competition.save!
+    redirect_to :back, notice: 'The league is now underway.'
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_league
@@ -82,6 +110,7 @@ class LeaguesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def league_params
-      params.require(:league).permit(:win_points, competition_attributes: [:id, :name, :sport_id, teams_competitions_attributes: [:id, :team_id, :competition_id, :_destroy]])
+      params.require(:league).permit(:win_points, competition_attributes: [:id, :name, :sport_id, :maximum_teams,
+      :closing_date, :description, teams_competitions_attributes: [:id, :team_id, :competition_id, :_destroy]])
     end
 end

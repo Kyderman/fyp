@@ -1,33 +1,43 @@
 
 
-<h1>Listing Competitions</h1>
+<div class="row jumbotron text-center">
+  <h1>Competition Search</h1>
+  <div class="col-md-offset-4 col-md-4">
+    <%= simple_form_for '', :method => 'get' do |f| %>
+      <%= f.input :search, label: false, placeholder: 'Enter search term...' %>
+      <%= f.input :sport, label: false, :include_blank => "Select Sport...", collection: Sport.all %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Sport</th>
-      <th>Competition format</th>
-      <th>Competition format type</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @competitions.each do |competition| %>
-      <tr>
-        <td><%= competition.name %></td>
-        <td><%= competition.sport_id %></td>
-        <td><%= competition.competition_format_id %></td>
-        <td><%= competition.competition_format_type %></td>
-        <td><%= link_to 'Show', polymorphic_path(competition.competition_format) %></td>
-        <td><%= link_to 'Edit', edit_competition_path(competition) %></td>
-        <td><%= link_to 'Destroy', competition, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+      <%= f.button :submit, "Search", class: 'btn btn-block btn-success' %>
     <% end %>
-  </tbody>
-</table>
+  </div>
+</div>
 
-<br>
+<div class="row">
+  <div class="col-md-offset-4 col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Search Results</h3>
+      </div>
+      <div class="panel-body">
+        <%if @search == false%>
+          <p>Please enter a search term to start...</p>
+        <%else%>
+          <%if @competitions.empty?%>
+            <p>No results found...</p>
+          <%else%>
+            <ul class="list-group">
+              <%@competitions.each do |c|%>
+                <%= link_to competitions_path(c), class: 'list-group-item' do %>
+                  <b><%=c.name%></b> - <%=c.competition_format_type%>
+                <%end%>
+              <%end%>
+            </ul>
+          <%end%>
+        <%end%>
+      </div>
+    </div>
+  </div>
+</div>
 
-<%= link_to 'New Competition', new_competition_path %>
+
+
