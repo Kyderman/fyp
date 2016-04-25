@@ -32,6 +32,8 @@ class User < ActiveRecord::Base
 
   has_many :competitions, through: :teams
 
+
+
   def friends
     active_friends | passive_friends
   end

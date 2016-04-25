@@ -58,9 +58,9 @@
             <%@col = 'list-group-item list-group-item-success'%>
           <%end%>
             <%= link_to competition_path(comp), class: @col do %>
+             <span class="badge"><%='<span class="glyphicon glyphicon-tower" aria-hidden="true"></span>'.html_safe unless !@owned_competitions.include?(comp)%></span>
               <h4 class="list-group-item-heading"><%=comp.name%></h4>
               <p class="list-group-item-text"><b><%=comp.competition_format_type%></b> - <%=comp.sport.name%></p>
-              
               <hr>
               <ul class="list-group">
               <% @teams.each do |team| %>
