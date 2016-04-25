@@ -24,6 +24,8 @@ class UsersController < ApplicationController
     @teams = @user.teams.includes(:sport)
     @competitions = @user.competitions.includes(:sport).includes(:teams).includes(:competition_format)
     @owned_competitions = Competition.where(owner: current_user)
+
+    @competitions += @owned_competitions
   end
 
   def update
