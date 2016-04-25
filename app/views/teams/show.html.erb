@@ -3,6 +3,9 @@
 <div class="row jumbotron text-center">
   <h1><%= @team.name%></h1>
   <h3><%= @team.sport.name%></h3>
+  <%if @team.owners.include?(current_user) %>
+    <%= link_to 'Edit', edit_team_path(@team), class: 'btn btn-warning' %>
+  <%end%>
 </div>
 
 <div class="row">
@@ -43,7 +46,7 @@
             
           <%end%>
         </ul>
-      </div>
+      
       <%if @members.include?(current_user) %>
       <%= simple_form_for @notification, :url => team_shouts_path, :method => :post do |f| %>
         <%= f.error_notification %>
@@ -58,6 +61,7 @@
         </div>
       <% end %>
       <%end%>
+      </div>
     </div>
   </div>
 </div>

@@ -25,10 +25,20 @@
           <%if @competitions.empty?%>
             <p>No results found...</p>
           <%else%>
+
             <ul class="list-group">
               <%@competitions.each do |c|%>
-                <%= link_to competitions_path(c), class: 'list-group-item' do %>
+               <%if !c.is_underway %>
+            <%@col = 'list-group-item list-group-item-warning'%>
+            <%@t = 'Registration Open'%>
+          <%else%>
+            <%@col = 'list-group-item list-group-item-success'%>
+             <%@t = 'Underway'%>
+          <%end%>
+                <%= link_to competition_path(c), class: @col do %>
                   <b><%=c.name%></b> - <%=c.competition_format_type%>
+                  <span class="badge"><%=@t%>
+                  </span>
                 <%end%>
               <%end%>
             </ul>

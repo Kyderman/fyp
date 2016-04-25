@@ -52,7 +52,12 @@
 
         <div class="list-group">
           <% @competitions.each do |comp| %>
-            <%= link_to competition_path(comp), class: 'list-group-item' do %>
+          <%if !comp.is_underway %>
+            <%@col = 'list-group-item list-group-item-warning'%>
+          <%else%>
+            <%@col = 'list-group-item list-group-item-success'%>
+          <%end%>
+            <%= link_to competition_path(comp), class: @col do %>
               <h4 class="list-group-item-heading"><%=comp.name%></h4>
               <p class="list-group-item-text"><b><%=comp.competition_format_type%></b> - <%=comp.sport.name%></p>
               
@@ -61,7 +66,13 @@
               <% @teams.each do |team| %>
                 
                 <% if comp.teams.include?(team) %>
-                   <li class="list-group-item"><%=team.name%><span class="badge"><%=LeagueTable.where(team: team, league:comp.competition_format).first.position.ordinalize unless !comp.is_underway%></span></li>
+                   <li class="list-group-item"><%=team.name%><span class="badge">
+                   <%if !comp.is_underway %>
+                    Registered
+                   <%else%>
+                    <%=LeagueTable.where(team: team, league:comp.competition_format).first.position.ordinalize%>
+                   <%end%>
+                  </span></li>
                 <%end%>
                 
               <%end%>

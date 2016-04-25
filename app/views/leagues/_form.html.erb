@@ -1,27 +1,42 @@
 <%= simple_form_for(@league) do |f| %>
   <%= f.error_notification %>
-  <div class="form-inputs">
-    <%= f.simple_fields_for(:competition) do |v| %>
-      <%= v.input :name %>
-      <%= v.input :description%>
-      <%= v.association :sport %>
-      <%= v.input :maximum_teams %>
-      <%= v.input :closing_date %>
-      <h3>Teams</h3>
-      <div id="teams_competitions">
+  <%= f.simple_fields_for(:competition) do |v| %>
+   <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Information</h3>
+      </div>
+      <div class="panel-body">
+        <%= v.input :name %>
+        <%= v.input :description%>
+        <%= v.association :sport %>
+        <%= v.input :maximum_teams %>
+        <%= v.input :closing_date %>
+        <%= f.button :submit, class: 'btn btn-success btn-block' %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Teams</h3>
+      </div>
+      <div class="panel-body">
+       <div id="teams_competitions">
         <%= v.simple_fields_for :teams_competitions do |a| %>
           <%= render 'teams_competition_fields', v: a, f: a %>
         <%end%>
         <div class="links">
-          <%= link_to_add_association 'Add Team', v, :teams_competitions, class: 'btn btn-success'%>
+          <%= link_to_add_association 'Add Team', v, :teams_competitions, class: 'btn btn-block btn-success'%>
           </br>
         </div>
       </div>
-    <% end %>
-   <%= f.input :win_points %> 
+      </div>
+    </div>
   </div>
+    
+     
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+    <% end %>
   </div>
 <% end %>

@@ -17,7 +17,7 @@
           <div class="panel-body">
             <%=link_to 'Start Competition!', league_begin_path, class: 'btn btn-success'%>
             <%=link_to 'Edit', edit_league_path(@league), class: 'btn btn-warning'%>
-            <%=link_to 'Remove', league_path(@league), method: :delete, class: 'btn btn-danger'%>
+            <%=link_to 'Remove', competition_path(@competition), method: :delete, class: 'btn btn-danger'%>
           </div>
         </div>
       <%else%>
@@ -80,6 +80,17 @@
         </div>
       </div>
     <%else%>
+    <%if current_user == @competition.owner%>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Admin Tools</h3>
+          </div>
+          <div class="panel-body">
+            <%=link_to 'Edit', edit_league_path(@league), class: 'btn btn-warning'%>
+            <%=link_to 'Remove', competition_path(@competition), method: :delete, class: 'btn btn-danger'%>
+          </div>
+        </div>
+      <%end%>
       <div class="row">
         <div class="col-md-12">
           <div class="panel panel-danger">

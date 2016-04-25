@@ -7,7 +7,7 @@ class Team < ActiveRecord::Base
            class_name: 'User',
            through: :users_teams,
             source: 'user'
-  has_many :teams_competitions
+  has_many :teams_competitions, dependent: :destroy
   has_many :competitions, through: :teams_competitions
   has_many :team_shouts
   belongs_to :sport

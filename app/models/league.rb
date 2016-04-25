@@ -144,7 +144,7 @@ class League < ActiveRecord::Base
   def get_table
 
     out = []
-    time = Benchmark.measure do
+
       items = LeagueTable.where(league: self).includes(:team)
 
       order = items.order(position: :desc)
@@ -157,8 +157,8 @@ class League < ActiveRecord::Base
         puts i.team.name
       end
 
-    end
-    logger.debug 'TABLE GEN ' + time.to_s
+
+
     return out
 
   end
@@ -233,7 +233,7 @@ class League < ActiveRecord::Base
   end
 
   def generate_fixtures
-    time = Benchmark.measure do
+
     team_count = competition.teams.count
     team_array = competition.teams
     even = false
@@ -273,8 +273,7 @@ class League < ActiveRecord::Base
     if !even
       bye.destroy
     end
-  end
-  logger.debug 'FIXTURE GEN ' + time.to_s
+
   end
 
   def perm_array(ar)
