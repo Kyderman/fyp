@@ -2,15 +2,22 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.simple_fields_for :scores do |score_fields| %>
-      <div class="col-md-6 text-center">
-      <h3><%=score_fields.object.team.name + ' Score'%></h3>
-      <%=score_fields.input :points, label: false%>
+    <div class="col-md-offset-3 col-md-6">
+      <%= f.simple_fields_for :scores do |score_fields| %>
+        <div class="col-md-6 text-center">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title"><%=score_fields.object.team.name + ' Score'%></h3>
+            </div>
+            <div class="panel-body">
+              <%=score_fields.input :points, label: false%>
+            </div>
+          </div>
+        </div>
+      <%end%>
+      <div class="col-md-12"%>
+      <%= f.button :submit, class: 'btn btn-block btn-success' %>
       </div>
-    <%end%>
-  </div>
-
-  <div class="form-actions">
-    <%= f.button :submit %>
+    </div>
   </div>
 <% end %>
